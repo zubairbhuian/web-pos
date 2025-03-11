@@ -44,6 +44,7 @@ class AuthController extends GetxController {
           Get.lazyPut<OnlineOrderController>(
             () => OnlineOrderController(),
           );
+          
           await OnlineOrderController.to.getOrders();
           PopupDialog.closeLoadingDialog();
           Get.offAllNamed(Routes.OLO);
