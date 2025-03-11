@@ -17,7 +17,7 @@ class AuthController extends GetxController {
     });
   }
 
-  RxString password = "".obs;
+  RxString password = "2332".obs;
 
   // **** Login *****
 
