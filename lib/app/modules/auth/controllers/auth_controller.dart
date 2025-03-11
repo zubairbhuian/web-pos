@@ -22,6 +22,7 @@ class AuthController extends GetxController {
   // **** Login *****
 
   void login() async {
+    print("login");
     Map<String, dynamic> data = {"loginPin": int.parse(password.value)};
     // var token = Preferences.BRANCH_TOKEN;
     PopupDialog.showLoadingDialog();
