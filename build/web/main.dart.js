@@ -112023,7 +112023,7 @@ $1(a){var s,r,q,p,o=null
 $.kW().a3e("Online Order Placed: "+A.i(a))
 try{s=A.aZ_(a)
 q=A.jQ(J.aB($.f1.aZ().a,"notification_sound"))
-if(q===!0){$.b5()
+if(q!==!1){$.b5()
 q=$.a_
 if(q==null)q=$.a_=B.t
 q.b3(0,o,t.c)
@@ -113102,7 +113102,7 @@ A.Ak.prototype={
 H(a){return A.lk(new A.aAl(),null,null,null,t.c)}}
 A.aAl.prototype={
 $1(a){var s,r,q,p=null,o=A.aXS(20),n=A.jQ(J.aB($.f1.aZ().a,"notification_sound"))
-n=A.hh(B.PV,B.PP,n===!0)
+n=A.hh(B.PV,B.PP,n!==!1)
 s=a.ay
 r=A.wf(A.aYx("assets/animations/connection_error.json",B.o6,25,25),0,3,0)
 q=t.p

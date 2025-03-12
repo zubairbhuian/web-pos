@@ -32,14 +32,11 @@ class Preferences {
   static const String PAPER_WIDTH = "paper_width";
   // print allow olo print
   static const String OLO_PRINT = "olo_print";
-   // ======  Notification Sound ==========
+  // ======  Notification Sound ==========
   static const String NOTIFICATION_SOUND = "notification_sound";
-   // ======  Custom Keyboard ==========
-  static const String CUSTOM_KEYBOARD = "custom_keyboard"; 
+  // ======  Custom Keyboard ==========
+  static const String CUSTOM_KEYBOARD = "custom_keyboard";
   static const String KEYBOARD_SOUND = "keyboard_sound";
- 
-
-
 
   ///  ====== init pref ============
   static Future<void> init() async {
@@ -111,8 +108,10 @@ class Preferences {
   static bool get isOloPrint => preferences.getBool(OLO_PRINT) ?? false;
   static set isOloPrint(bool value) => preferences.setBool(OLO_PRINT, value);
   //notification sound
-  static bool get isNotificationSound => preferences.getBool(NOTIFICATION_SOUND) ?? false;
-  static set isNotificationSound(bool value) => preferences.setBool(NOTIFICATION_SOUND, value);
+  static bool get isNotificationSound =>
+      preferences.getBool(NOTIFICATION_SOUND) ?? true;
+  static set isNotificationSound(bool value) =>
+      preferences.setBool(NOTIFICATION_SOUND, value);
 
   /// user info
   static String get user => preferences.getString(USER_INFO) ?? '';
@@ -154,13 +153,17 @@ class Preferences {
   static Future removeItem(String key) async {
     await preferences.remove(key);
   }
+
   // ***** Custom Keyboard *****
-  static bool get customKeyboard => preferences.getBool(CUSTOM_KEYBOARD) ?? false;
-  static set customKeyboard(bool value) => preferences.setBool(CUSTOM_KEYBOARD, value);
+  static bool get customKeyboard =>
+      preferences.getBool(CUSTOM_KEYBOARD) ?? false;
+  static set customKeyboard(bool value) =>
+      preferences.setBool(CUSTOM_KEYBOARD, value);
   // ***** Keyboard Sound *****
   static bool get keyboardSound => preferences.getBool(KEYBOARD_SOUND) ?? false;
-  static set keyboardSound(bool value) => preferences.setBool(KEYBOARD_SOUND, value);
-  
+  static set keyboardSound(bool value) =>
+      preferences.setBool(KEYBOARD_SOUND, value);
+
   // ***** Clear the SharedPreferences *****
   static void clear() {
     preferences.clear();
