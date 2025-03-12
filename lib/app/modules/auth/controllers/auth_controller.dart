@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:yogo_pos/app/modules/onlineOrder/controllers/online_order_controller.dart';
+import 'package:yogo_pos/app/modules/onlineOrder/controllers/socket_controller.dart';
 import 'package:yogo_pos/app/routes/app_pages.dart';
 import 'package:yogo_pos/app/services/base/preferences.dart';
 import 'package:yogo_pos/app/services/controller/base_controller.dart';
@@ -41,10 +42,10 @@ class AuthController extends GetxController {
           Preferences.accessToken = res.data["data"]["accessToken"];
 
           await BaseController.to.setEmployeeData(res.data["data"]["employee"]);
-          Get.lazyPut<OnlineOrderController>(
-            () => OnlineOrderController(),
-          );
-          
+          Get.put<OnlineOrderController>(OnlineOrderController());
+          Get.put<SocketController>(SocketController());
+          SocketController.to.connect();
+
           await OnlineOrderController.to.getOrders();
           PopupDialog.closeLoadingDialog();
           Get.offAllNamed(Routes.OLO);

@@ -109,6 +109,7 @@ import 'package:yogo_pos/app/widgets/popup_dialogs.dart';
 //   }
 // }
 class SocketController extends GetxController {
+  static SocketController get to => Get.find();
   IO.Socket? _socket;
 
   void connect() {
@@ -182,9 +183,4 @@ class SocketController extends GetxController {
     super.onClose();
   }
 
-  @override
-  void onInit() {
-    connect();
-    super.onInit();
-  }
 }
