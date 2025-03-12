@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:yogo_pos/app/services/controller/config_controller.dart';
 import 'package:yogo_pos/app/utils/static_colors.dart';
+import 'package:yogo_pos/app/widgets/title_bar.dart';
 
 import '../controllers/online_order_controller.dart';
 import '../widgets/online_order_card.dart';
@@ -14,6 +15,11 @@ class OnlineOrderView extends GetView<OnlineOrderController> {
     ThemeData theme = Theme.of(context);
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: theme.scaffoldBackgroundColor,
+        elevation: 0,
+        flexibleSpace: TitleBar(),
+      ),
       body: Padding(
         padding: const EdgeInsets.only(left: 10, bottom: 10),
         child: GetBuilder<OnlineOrderController>(builder: (controller) {

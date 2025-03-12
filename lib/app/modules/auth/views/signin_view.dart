@@ -10,6 +10,7 @@ import 'package:yogo_pos/app/widgets/custom_btn.dart';
 import 'package:yogo_pos/app/widgets/custom_textfield.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:yogo_pos/app/widgets/title_bar.dart';
 
 class SigninView extends StatefulWidget {
   const SigninView({super.key});
@@ -34,6 +35,11 @@ class _SigninViewState extends State<SigninView> {
     ThemeData theme = Theme.of(context);
 
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: theme.scaffoldBackgroundColor,
+          elevation: 0,
+          flexibleSpace: TitleBar(),
+        ),
         body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             child: Column(

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:yogo_pos/app/modules/onlineOrder/models/order_model.dart';
 import 'package:yogo_pos/app/modules/onlineOrder/widgets/custom_table_item.dart';
+import 'package:yogo_pos/app/modules/onlineOrder/widgets/edit_notes.dart';
 import 'package:yogo_pos/app/services/controller/base_controller.dart';
 import 'package:yogo_pos/app/utils/my_func.dart';
 import 'package:yogo_pos/app/utils/static_colors.dart';
 import 'package:yogo_pos/app/widgets/custom_textfield.dart';
 import 'package:yogo_pos/app/widgets/my_custom_text.dart';
 import 'package:get/get.dart';
+import 'package:yogo_pos/app/widgets/popup_dialogs.dart';
 
 class OrderDetailsView extends StatelessWidget {
   final OrderModel order;
@@ -67,34 +69,12 @@ class OrderDetailsView extends StatelessWidget {
             style: theme.textTheme.titleMedium,
           ).marginOnly(right: 16),
           Visibility(
-            visible:order.orderType == "DINE_IN",
-            child: Text(
-              'Table: ${data.tableName}',
-              style: theme.textTheme.titleMedium,
-            ).marginOnly(right: 16),
-          ),
-          Visibility(
             visible: order.orderType == "DINE_IN",
             child: Text(
               'Guests: ${data.numberOfPeople}',
               style: theme.textTheme.titleMedium,
             ).marginOnly(right: 16),
           ),
-          Row(
-            children: [
-              Text(
-                'Server: ${MyFunc.capitalizeEachWord(s: data.employee?.firstName)}',
-                style: theme.textTheme.titleMedium,
-              ),
-              Visibility(
-                visible: data.paymentStatus == "UNPAID",
-                child: const Icon(
-                  Icons.edit_square,
-                  color: StaticColors.orangeColor,
-                ),
-              )
-            ],
-          ).marginOnly(right: 16),
           Text(
             'Order Type: ${data.orderType}'.replaceAll("_", " "),
             style: theme.textTheme.titleMedium,
@@ -108,15 +88,22 @@ class OrderDetailsView extends StatelessWidget {
           ),
           Visibility(
             visible: data.orderType == 'TAKEOUT',
-            child: const Row(
-              children: [
-                Text(
-                  'Notes',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
-                ),
-                SizedBox(width: 8),
-                Icon(Icons.visibility, color: StaticColors.blueColor),
-              ],
+            child: InkWell(
+              onTap: () {
+                PopupDialog.customDialog(
+                    width: 700,
+                    child: EditNotes(order: data, onPressed: (notes) async {}));
+              },
+              child: const Row(
+                children: [
+                  Text(
+                    'Notes',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+                  ),
+                  SizedBox(width: 8),
+                  Icon(Icons.visibility, color: StaticColors.blueColor),
+                ],
+              ),
             ),
           )
         ],
@@ -154,10 +141,8 @@ class OrderDetailsView extends StatelessWidget {
                     // ),
                     const SizedBox(height: 12),
                     CustomSearchTextField(
-                      
                       hintText: data.orderStatus,
                       dropDownList: [],
-                    
                     ),
                   ],
                 ),
@@ -174,8 +159,7 @@ class OrderDetailsView extends StatelessWidget {
                   ),
                   child: Visibility(
                     visible: data.paymentStatus == "UNPAID",
-                    replacement: SizedBox(),
-                    child: Column(
+                    replacement: Column(
                       children: [
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -262,8 +246,7 @@ class OrderDetailsView extends StatelessWidget {
                                 '\$${data.totalOrderAmount.toStringAsFixed(2)}'),
                       ],
                     ),
-                   
-                   
+                    child: SizedBox(),
                   ),
                 ),
                 child: const SizedBox(),
@@ -292,57 +275,47 @@ class OrderDetailsView extends StatelessWidget {
           CustomTableItem(
             isSelected: true,
             isHeader: true,
-            onChanged: (value) {
-             
-            },
+            onChanged: (value) {},
           ),
           Expanded(
             child: SingleChildScrollView(
-       
-                child: Column(
-                  children: [
-                    Column(
-                      children: List.generate(data.carts.length, (index) {
-                        var item = data.carts[index];
-                        var gratuity = (item.price - item.discountAmount) * .05;
-                        var gst = (item.price - item.discountAmount) * .05;
-                        var pst = (item.price - item.discountAmount) * .05;
-                        var totalPrice = item.price * item.quantity;
-                        var discount = item.discountAmount;
-                        var totalDiscount = item.discountAmount * item.quantity;
-                        return CustomTableItem(
-                          onTap: () {
-                           
-                          },
-                          isSelected: false,
-                          onChanged: (value) {
-                        
-                          },
-                          sl: "${index + 1}",
-                          name: item.itemType == "weighing scale"
-                              ? "${item.name}(${item.weight}LB)"
-                              : item.name,
-                          qty: "${item.quantity}",
-                          discount: "\$ ${discount.toStringAsFixed(2)}",
-                          totalDiscount:
-                              "\$ ${totalDiscount.toStringAsFixed(2)}",
-                          gratuity: "\$ ${gratuity.toStringAsFixed(2)}",
-                          gst: "\$ ${gst.toStringAsFixed(2)}",
-                          pst: "\$ ${pst.toStringAsFixed(2)}",
-                          totalPrice: "\$ ${totalPrice.toStringAsFixed(2)}",
-                          price: "\$ ${item.price.toStringAsFixed(2)}",
-                          isUpdated: item.isUpdated,
-                          modifiers: item.modifiers,
-                          note: item.kitchenNote,
-                          options: item.variationOptions,
-                        );
-                      }),
-                    ),
-                  ],
-                ),
-              )
-            
-            ,
+              child: Column(
+                children: [
+                  Column(
+                    children: List.generate(data.carts.length, (index) {
+                      var item = data.carts[index];
+                      var gratuity = (item.price - item.discountAmount) * .05;
+                      var gst = (item.price - item.discountAmount) * .05;
+                      var pst = (item.price - item.discountAmount) * .05;
+                      var totalPrice = item.price * item.quantity;
+                      var discount = item.discountAmount;
+                      var totalDiscount = item.discountAmount * item.quantity;
+                      return CustomTableItem(
+                        onTap: () {},
+                        isSelected: false,
+                        onChanged: (value) {},
+                        sl: "${index + 1}",
+                        name: item.itemType == "weighing scale"
+                            ? "${item.name}(${item.weight}LB)"
+                            : item.name,
+                        qty: "${item.quantity}",
+                        discount: "\$ ${discount.toStringAsFixed(2)}",
+                        totalDiscount: "\$ ${totalDiscount.toStringAsFixed(2)}",
+                        gratuity: "\$ ${gratuity.toStringAsFixed(2)}",
+                        gst: "\$ ${gst.toStringAsFixed(2)}",
+                        pst: "\$ ${pst.toStringAsFixed(2)}",
+                        totalPrice: "\$ ${totalPrice.toStringAsFixed(2)}",
+                        price: "\$ ${item.price.toStringAsFixed(2)}",
+                        isUpdated: item.isUpdated,
+                        modifiers: item.modifiers,
+                        note: item.kitchenNote,
+                        options: item.variationOptions,
+                      );
+                    }),
+                  ),
+                ],
+              ),
+            ),
           ),
 
           const Divider(
@@ -432,147 +405,6 @@ class OrderDetailsView extends StatelessWidget {
           ),
 
           const SizedBox(height: 16),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          //   child: GetBuilder<PosController>(builder: (pc) {
-          //     return Visibility(
-          //       visible: pc.checkSplitChecksAllPaid() ||
-          //           data.paymentStatus == "PAID" ||
-          //           data.orderStatus == "CANCELED",
-          //       replacement: Row(
-          //         children: [
-          //           PrimaryBtn(
-          //             width: 200,
-          //             height: height,
-          //             textMaxSize: textMaxSize,
-          //             textMinSize: textMinSize,
-          //             onPressed: () {
-                   
-          //             },
-          //             // Add Items,Change Table,Guests
-          //             text: 'Add Items ,\nChange Table, Guests'.toUpperCase(),
-          //             textColor: Colors.white,
-          //             padding: const EdgeInsets.symmetric(
-          //                 horizontal: 6, vertical: 10),
-          //             color: theme.primaryColor,
-          //           ),
-          //           GetBuilder<PosController>(builder: (context) {
-          //             return Tooltip(
-          //               message: context.selectedItemList.isEmpty
-          //                   ? 'Select item first'
-          //                   : '',
-          //               child: PrimaryBtn(
-          //                 onPressed: () {
-          //                   context.repeatAllSelectedItems();
-          //                 },
-          //                 width: btnSize,
-          //                 height: height,
-          //                 isdisabled:
-          //                     context.selectedItemList.isEmpty ? true : false,
-          //                 textMaxSize: textMaxSize,
-          //                 textMinSize: textMinSize,
-          //                 text: 'Repeat Items'.toUpperCase(),
-          //                 textColor: Colors.white,
-          //                 color: StaticColors.greenColor,
-          //                 padding: const EdgeInsets.symmetric(
-          //                     horizontal: 6, vertical: 10),
-          //               ).marginOnly(left: 12),
-          //             );
-          //           }),
-          //           // todo : Transfer  Items
-          //           // GetBuilder<PosController>(builder: (context) {
-          //           //   return Tooltip(
-          //           //     message: context.selectedItemList.isEmpty
-          //           //         ? 'Select item first'
-          //           //         : (context.myOrder.orderType == 'TAKEOUT'
-          //           //             ? 'Transferring items is not possible with this order.'
-          //           //             : ''),
-          //           //     child: PrimaryBtn(
-          //           //       onPressed: () {
-          //           //         // PopupDialog.permissionDialogWithAccessPin(
-          //           //         //     onSubmit: () {
-          //           //         //       Get.back();
-          //           //         //     },
-          //           //         //     title: "Transfer Items?");
-          //           //         DineInController.to.getTableCategories();
-          //           //         PopupDialog.customDialog(
-          //           //             width: Get.width * 0.8,
-          //           //             child: const TableBody(
-          //           //               isScrollable: false,
-          //           //               isTransferItems: true,
-          //           //             ));
-          //           //       },
-          //           //       width: btnSize,
-          //           //       height: height,
-          //           //       isdisabled: context.selectedItemList.isEmpty ||
-          //           //               context.myOrder.orderType == 'TAKEOUT'
-          //           //           ? true
-          //           //           : false,
-          //           //       textMaxSize: textMaxSize,
-          //           //       textMinSize: textMinSize,
-          //           //       padding: const EdgeInsets.symmetric(
-          //           //           horizontal: 6, vertical: 10),
-          //           //       text: 'Transfer Items'.toUpperCase(),
-          //           //       textColor: Colors.white,
-          //           //       color: StaticColors.pinkColor,
-          //           //     ).marginOnly(left: 12),
-          //           //   );
-          //           // }),
-          //           GetBuilder<PosController>(builder: (context) {
-          //             return Tooltip(
-          //               message: context.selectedItemList.isEmpty
-          //                   ? 'Select item first'
-          //                   : '',
-          //               child: PrimaryBtn(
-          //                 width: btnSize,
-          //                 height: height,
-          //                 isdisabled:
-          //                     context.selectedItemList.isEmpty ? true : false,
-          //                 textMaxSize: textMaxSize,
-          //                 textMinSize: textMinSize,
-          //                 onPressed: () {
-          //                   PopupDialog.permissionDialogWithAccessPin(
-          //                       onSubmit: () {
-          //                         context.removeAllSelectedItems();
-          //                         Get.back();
-          //                       },
-          //                       title: context.selectedItemList.length == 1
-          //                           ? "Remove Item?"
-          //                           : "Remove Items?");
-          //                 },
-          //                 // width: double.infinity,
-          //                 text: 'Remove Items'.toUpperCase(),
-          //                 textColor: Colors.white,
-          //                 color: StaticColors.pinkColor,
-          //               ).marginOnly(left: 12),
-          //             );
-          //           }),
-          //         ],
-          //       ),
-          //       child: const Row(
-          //         children: [
-          //           // PrimaryBtn(
-          //           //   onPressed: () {
-          //           //     PopupDialog.showErrorMessage(
-          //           //         "This feature will be available soon");
-          //           //   },
-          //           //   width: btnSize,
-          //           //   height: height,
-          //           //   textMaxSize: textMaxSize,
-          //           //   textMinSize: textMinSize,
-          //           //   padding: const EdgeInsets.symmetric(
-          //           //       horizontal: 6, vertical: 10),
-          //           //   text: 'ReCall'.toUpperCase(),
-          //           //   textColor: Colors.white,
-          //           //   color: StaticColors.orangeColor,
-          //           // )
-          //         ],
-          //       ),
-          //     );
-          //   }),
-          // ),
-       
-       
         ],
       ),
     );
