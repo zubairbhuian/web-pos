@@ -12,7 +12,6 @@ import 'package:yogo_pos/app/utils/logger.dart';
 import 'package:yogo_pos/app/utils/urls.dart';
 import 'package:yogo_pos/app/widgets/popup_dialogs.dart';
 
-
 // class SocketController extends GetxController {
 //   IO.Socket? _socket;
 //   bool _isManualDisconnect = false; // Flag to track manual disconnection
@@ -113,6 +112,7 @@ class SocketController extends GetxController {
   IO.Socket? _socket;
 
   void connect() {
+    print("socket connecting");
     _socket = IO.io(URLS.socketServer, <String, dynamic>{
       "transports": ["websocket"],
       "autoConnect": false,
