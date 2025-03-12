@@ -43,9 +43,6 @@ class AuthController extends GetxController {
 
           await BaseController.to.setEmployeeData(res.data["data"]["employee"]);
           Get.put<OnlineOrderController>(OnlineOrderController());
-          Get.put<SocketController>(SocketController());
-          SocketController.to.connect();
-
           await OnlineOrderController.to.getOrders();
           PopupDialog.closeLoadingDialog();
           Get.offAllNamed(Routes.OLO);

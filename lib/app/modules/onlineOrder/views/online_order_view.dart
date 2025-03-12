@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:yogo_pos/app/modules/onlineOrder/controllers/socket_controller.dart';
 import 'package:yogo_pos/app/services/controller/config_controller.dart';
 import 'package:yogo_pos/app/utils/static_colors.dart';
 import 'package:yogo_pos/app/widgets/title_bar.dart';
@@ -11,7 +12,8 @@ class OnlineOrderView extends GetView<OnlineOrderController> {
   const OnlineOrderView({super.key});
   @override
   Widget build(BuildContext context) {
-    controller.getOrders();
+    // controller.getOrders();
+    // SocketController.to.connect();
     ThemeData theme = Theme.of(context);
 
     return Scaffold(

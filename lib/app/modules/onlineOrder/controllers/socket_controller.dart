@@ -178,9 +178,14 @@ class SocketController extends GetxController {
   }
 
   @override
+  void onReady() {
+    connect();
+    super.onReady();
+  }
+
+  @override
   void onClose() {
     _socket?.disconnect();
     super.onClose();
   }
-
 }

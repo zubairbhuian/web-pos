@@ -6,11 +6,7 @@ import '../controllers/socket_controller.dart';
 class OnlineOrderBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<OnlineOrderController>(
-      () => OnlineOrderController(),
-    );
-    Get.lazyPut<SocketController>(
-      () => SocketController(),
-    );
+    Get.put<OnlineOrderController>(OnlineOrderController());
+    Get.put<SocketController>(SocketController());
   }
 }

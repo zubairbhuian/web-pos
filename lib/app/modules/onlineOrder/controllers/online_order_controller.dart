@@ -140,4 +140,9 @@ class OnlineOrderController extends GetxController {
     estTimeController.dispose();
     super.onClose();
   }
+  @override
+  void onReady() {
+    getOrders();
+    super.onReady();
+  }
 }
